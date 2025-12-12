@@ -22,6 +22,14 @@ public class CAtomController {
     @Autowired
     private CAtomMetaService cAtomMetaService;
 
+    // todo tree接口
+
+    // todo list接口 入参keys
+
+    // todo 全量json获取接口
+
+    // todo 全量json update接口
+
     /**
      * 获取原子能力树层级关系和公共信息
      */

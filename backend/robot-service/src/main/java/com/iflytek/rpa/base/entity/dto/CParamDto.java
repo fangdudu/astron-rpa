@@ -1,6 +1,9 @@
 package com.iflytek.rpa.base.entity.dto;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+
+import com.iflytek.rpa.starter.utils.StringUtils;
 import lombok.Data;
 
 @Data
@@ -51,6 +54,15 @@ public class CParamDto {
     /**
      * 流程id
      */
-    @NotNull(message = "processId不能为null")
     private String processId;
+
+    /**
+     * python模块id
+     */
+    private String moduleId;
+
+    @AssertTrue(message = "processId和moduleId不能同时为null")
+    public boolean isProcessIdOrModuleIdNotBothNull() {
+        return !StringUtils.isEmpty(this.processId) || !StringUtils.isEmpty(this.moduleId);
+    }
 }
