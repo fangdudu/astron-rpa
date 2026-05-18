@@ -98,6 +98,11 @@ public class NotifySendServiceImpl extends ServiceImpl<NotifySendMapper, NotifyS
 
             // 数据填充
             notifySend.setTenantId(createNotifyDto.getTenantId());
+            if (StringUtils.equals(createNotifyDto.getMessageType(), "teamMarketInvite")) {
+                if(StringUtils.isNotEmpty(marketUser.getTenantId())){
+                    notifySend.setTenantId(marketUser.getTenantId());
+                }
+            }
             notifySend.setUserId(marketUser.getCreatorId());
             notifySend.setMessageType(createNotifyDto.getMessageType());
             notifySend.setMarketId(createNotifyDto.getMarketId());
@@ -321,10 +326,11 @@ public class NotifySendServiceImpl extends ServiceImpl<NotifySendMapper, NotifyS
 
             AppMarketUser appMarketUser = new AppMarketUser();
             appMarketUser.setMarketId(notifySend.getMarketId());
+            appMarketUser.setTenantId(notifySend.getTenantId());
             appMarketUser.setUserType(notifySend.getUserType());
             appMarketUser.setCreatorId(userId);
             appMarketUser.setUpdaterId(userId);
-
+            appMarketUser.setTenantId(notifySend.getTenantId());
             int insert = appMarketUserDao.insert(appMarketUser);
             boolean b = baseMapper.joinTeam(notifyId);
 
@@ -376,10 +382,7 @@ public class NotifySendServiceImpl extends ServiceImpl<NotifySendMapper, NotifyS
         } else if ("release".equals(applicationType)) {
             applicationTypeStr = "上架";
         }
-        RobotExecute robotExecute = robotExecuteDao.queryByRobotId(
-                applicationNotifyDto.getRobotId(),
-                applicationNotifyDto.getUserId(),
-                applicationNotifyDto.getTenantId());
+        RobotExecute robotExecute = robotExecuteDao.queryByRobotId(applicationNotifyDto.getRobotId(), applicationNotifyDto.getUserId(), applicationNotifyDto.getTenantId());
         String robotStr = robotExecute != null ? robotExecute.getName() : "";
 
         return String.format("您的%s机器人%s申请流程%s，请至应用市场查看", robotStr, applicationTypeStr, statusStr);
