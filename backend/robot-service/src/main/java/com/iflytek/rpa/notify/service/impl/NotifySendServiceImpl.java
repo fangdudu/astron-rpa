@@ -99,7 +99,7 @@ public class NotifySendServiceImpl extends ServiceImpl<NotifySendMapper, NotifyS
             // 数据填充
             notifySend.setTenantId(createNotifyDto.getTenantId());
             if (StringUtils.equals(createNotifyDto.getMessageType(), "teamMarketInvite")) {
-                if(StringUtils.isNotEmpty(marketUser.getTenantId())){
+                if (StringUtils.isNotEmpty(marketUser.getTenantId())) {
                     notifySend.setTenantId(marketUser.getTenantId());
                 }
             }
@@ -382,7 +382,10 @@ public class NotifySendServiceImpl extends ServiceImpl<NotifySendMapper, NotifyS
         } else if ("release".equals(applicationType)) {
             applicationTypeStr = "上架";
         }
-        RobotExecute robotExecute = robotExecuteDao.queryByRobotId(applicationNotifyDto.getRobotId(), applicationNotifyDto.getUserId(), applicationNotifyDto.getTenantId());
+        RobotExecute robotExecute = robotExecuteDao.queryByRobotId(
+                applicationNotifyDto.getRobotId(),
+                applicationNotifyDto.getUserId(),
+                applicationNotifyDto.getTenantId());
         String robotStr = robotExecute != null ? robotExecute.getName() : "";
 
         return String.format("您的%s机器人%s申请流程%s，请至应用市场查看", robotStr, applicationTypeStr, statusStr);
